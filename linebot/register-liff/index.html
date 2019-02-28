@@ -3,16 +3,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <!-- IE可能不見得有效 -->
     <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+    <!-- 設定成馬上就過期 -->
     <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <!-- 與第一行是同樣的作用 -->
+
     <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
+    <!-- 常見此寫法 -->
 
   <title>Wedding Register test</title>
 </head>
 
 <body>
+<input name="UID" id="UID" type="input" value="" style="display:none"/>
 
-<input name="UID" id="UID" type="input" value="" />
+<div id="finish_show" style="display: none">
+<center><H1>報到完成</H1></center>
+<center><img src="https://sssc.vic.edu.au/wp-content/uploads/2018/08/checkmark.gif" width="200px" alt="" title="OK" /></center>
+</div>
 
 </body>
 <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
@@ -21,30 +30,37 @@
 window.onload = function (e) {
     liff.init(function (data) {
         initializeApp(data);
+        doRegister();
         //load_user_info(data.context.userId);
     });
 };
 
-alert("t1");
-doRegister();
 
 function doRegister() {
-    alert("t2");
-    liff.sendMessages([{
-        type: 'text',
-        text: "完成報到"
-    }]).catch(function (error) {
-        window.alert("Error sending message: " + error);
-    });
+    // liff.sendMessages([{
+    //     type: 'text',
+    //     text: "完成報到"
+    // }]).catch(function (error) {
+    //     window.alert("Error sending message: " + error);
+    // });
+    // liff.closeWindow();
+    var UID = encodeURIComponent(document.getElementById('UID').value);
+    var url = `/checkin_user?UID=${UID}`;
+    httpGet(url);
     
-    //liff.closeWindow();
-    //window.location.href = "https://line.me/R/ti/p/_YBNzLQFy0";
+    document.getElementById('finish_show').style="";
+
+    setTimeout(function(){ 
+        liff.openWindow({
+            url:'https://line.me/R/ti/p/_YBNzLQFy0',
+            external:false
+        });
+    }, 2000);
+    
 }
 
 function initializeApp(data) {
-    alert("t10");
     document.getElementById('UID').value = data.context.userId;
-    alert("t0");
 }
 
 function finish() {
