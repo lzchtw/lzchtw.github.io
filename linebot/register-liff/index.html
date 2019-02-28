@@ -27,11 +27,6 @@
 <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
 
 <script>
-
-var url = 'https://lzch.pythonanywhere.com/checkin_user?UID=123';
-httpGet(url);
-
-
 window.onload = function (e) {
     liff.init(function (data) {
         initializeApp(data);
@@ -51,11 +46,7 @@ function doRegister() {
     // liff.closeWindow();
     var UID = encodeURIComponent(document.getElementById('UID').value);
     var url = `https://lzch.pythonanywhere.com/checkin_user?UID=${UID}`;
-    
-    var x = document.createElement("IMG");
-    x.setAttribute("src", url);
-    x.setAttribute("style", "display: none");
-    document.body.appendChild(x);    
+    httpGet(url);
     
     document.getElementById('finish_show').style="";
 
@@ -64,7 +55,7 @@ function doRegister() {
             url:'https://line.me/R/ti/p/_YBNzLQFy0',
             external:false
         });
-    }, 9992000);
+    }, 2000);
     
 }
 
