@@ -25,9 +25,11 @@ window.onload = function (e) {
     });
 };
 
+alert("t1");
 doRegister();
 
 function doRegister() {
+    alert("t2");
     liff.sendMessages([{
         type: 'text',
         text: "完成報到"
@@ -35,8 +37,8 @@ function doRegister() {
         window.alert("Error sending message: " + error);
     });
     
-    liff.closeWindow();
-    window.location.href = "https://line.me/R/ti/p/_YBNzLQFy0";
+    //liff.closeWindow();
+    //window.location.href = "https://line.me/R/ti/p/_YBNzLQFy0";
 }
 
 function initializeApp(data) {
