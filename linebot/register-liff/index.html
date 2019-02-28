@@ -12,7 +12,7 @@
     <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
     <!-- 常見此寫法 -->
 
-  <title>Wedding Register test</title>
+  <title>Wedding Register</title>
 </head>
 
 <body>
@@ -45,8 +45,12 @@ function doRegister() {
     // });
     // liff.closeWindow();
     var UID = encodeURIComponent(document.getElementById('UID').value);
-    var url = `/checkin_user?UID=${UID}`;
-    httpGet(url);
+    var url = `https://lzch.pythonanywhere.com/checkin_user?UID=${UID}`;
+    
+    var x = document.createElement("IMG");
+    x.setAttribute("src", url);
+    x.setAttribute("style", "display: none");
+    document.body.appendChild(x);    
     
     document.getElementById('finish_show').style="";
 
