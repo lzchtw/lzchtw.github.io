@@ -1,1 +1,104 @@
-It works.
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT">
+
+  <title>Wedding Register</title>
+</head>
+
+<body>
+
+<input name="UID" id="UID" type="input" value="" />
+
+</body>
+<script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+
+<script>
+window.onload = function (e) {
+    liff.init(function (data) {
+        initializeApp(data);
+        //load_user_info(data.context.userId);
+    });
+};
+
+doRegister();
+
+function doRegister() {
+    liff.sendMessages([{
+        type: 'text',
+        text: "完成報到"
+    }]).catch(function (error) {
+        window.alert("Error sending message: " + error);
+    });
+    
+    liff.closeWindow();
+    window.location.href = "https://line.me/R/ti/p/_YBNzLQFy0";
+}
+
+function initializeApp(data) {
+    document.getElementById('UID').value = data.context.userId;
+
+}
+
+function finish() {
+    var UID = encodeURIComponent(document.getElementById('UID').value);
+    var UserName = encodeURIComponent(document.getElementById('UserName').value);
+    var Email = encodeURIComponent(document.getElementById('Email').value);
+    var adoult = encodeURIComponent(document.getElementById('adoult').value);
+    var child = encodeURIComponent(document.getElementById('child').value);
+    var relation = encodeURIComponent(document.getElementById('relation').value);
+    var question = encodeURIComponent(document.getElementById('question').value);
+
+    var url = `/insert_user?UID=${UID}&UserName=${UserName}&Email=${Email}&adoult=${adoult}&child=${child}&relation=${relation}&question=${question}`;
+
+    httpGet(url);
+
+    liff.closeWindow();
+    liff.sendMessages([{
+        type: 'text',
+        text: "報名完成"
+    }]).catch(function (error) {
+        window.alert("Error sending message: " + error);
+    });
+
+}
+
+function load() {
+    load_user_info(document.getElementById('UID').value);
+}
+
+function load_user_info(uid) {
+    if (uid) {
+        var url = `/get_user?UID=${uid}`;
+        var respStr = httpGet(url);
+
+        //alert(respStr);
+        var respObj = JSON.parse(respStr);
+
+        if (respObj["NAME"]) {
+            document.getElementById('UserName').value = decodeURIComponent(respObj["NAME"]);
+            document.getElementById('Email').value = decodeURIComponent(respObj["EMAIL"]);
+            document.getElementById('adoult').value = decodeURIComponent(respObj["ADOULT"]);
+            document.getElementById('child').value = decodeURIComponent(respObj["CHILD"]);
+            document.getElementById('relation').value = decodeURIComponent(respObj["RELATION"]);
+            document.getElementById('question').value = decodeURIComponent(respObj["MESSAGE"]);
+        }
+    }
+}
+
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+</script>
+
+</html>
